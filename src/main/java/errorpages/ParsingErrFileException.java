@@ -1,3 +1,6 @@
+package errorpages;
+ 
+
 /**
  * Created by ehernandez on 28/04/16.
  */

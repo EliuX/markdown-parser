@@ -1,4 +1,7 @@
+package common;
+
 import com.google.gson.Gson;
+import errorpages.ParsingErrFileException;
 import javafx.util.Pair;
 
 import java.io.*;
@@ -48,7 +51,7 @@ public class Utils {
         return key.replace("#","").trim();
     }
 
-    public static void saveStatusData(Map<String, Map> data, File jsonFile) throws ParsingErrFileException{
+    public static void saveStatusData(Map<String, Map> data, File jsonFile) throws ParsingErrFileException {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(jsonFile))) {
             bw.write((new Gson()).toJson(data));

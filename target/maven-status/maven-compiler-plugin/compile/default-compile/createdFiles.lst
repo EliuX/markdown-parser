@@ -1,5 +1,5 @@
-ErrorsPageMigrator.class
-ParsingErrFileException.class
-MigrateErrorPages.class
-Utils.class
-ErrorModel.class
+errorpages/ErrorsPageMigrator.class
+errorpages/ParsingErrFileException.class
+common/Utils.class
+errorpages/ErrorModel.class
+errorpages/MigrateErrorPages.class

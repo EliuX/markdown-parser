@@ -1,21 +1,13 @@
-import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
+package errorpages;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
+import common.Utils;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 

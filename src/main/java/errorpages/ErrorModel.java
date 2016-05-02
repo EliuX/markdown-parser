@@ -1,7 +1,9 @@
+package errorpages;
 
 import javafx.util.Pair;
 
 import java.io.File;
+import common.Utils;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

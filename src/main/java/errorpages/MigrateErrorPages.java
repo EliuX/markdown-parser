@@ -1,3 +1,6 @@
+package errorpages;
+
+
 public class MigrateErrorPages {
 
     public static void main(String[] args) {
