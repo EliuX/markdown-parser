@@ -1,6 +1,8 @@
 package errorpages;
 
 
+import pages.ParsingFileException;
+
 public class MigrateErrorPages {
 
     public static void main(String[] args) {
@@ -9,7 +11,7 @@ public class MigrateErrorPages {
         try {
             migrator = new ErrorsPageMigrator();
             migrator.run();
-        } catch (ParsingErrFileException ex) {
+        } catch (ParsingFileException ex) {
             System.err.println(ex.getMessage());
         }
     }

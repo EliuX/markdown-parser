@@ -1,42 +1,47 @@
-package errorpages;
+package pages;
 
+import common.Utils;
+import errorpages.ErrorModel;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.io.File;
-import java.util.*;
-import common.Utils;
-import pages.ParsingFileException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * Created by ehernandez on 28/04/16.
  */
-public class ErrorsPageMigrator implements Runnable {
+public class PagesMigrator implements Runnable {
 
     private WebDriver driver;
 
     private final String LOGFILE_PATH = System.getProperty("user.home") + File.separator + "error-files-log.json";
 
-    private final String DEBUGGING_CMS_BASEURL = "https://www.twilio.com/docs/admin/pages/492/edit/";
+    private final String META_SCAN_PATH = System.getProperty("user.home") + File.separator + "scan-md.json";
 
-    private final String DEBUGGING_ADD_NEW_ERROR = "https://www.twilio.com/docs/admin/pages/add/api_reference/apireferencepage/492/";
+    private final String CMS_BASEURL = "https://www.twilio.com/docs/admin/pages/492/edit/";
+
+    private final String ADD_NEW_PAGE = "https://www.twilio.com/docs/admin/pages/add/api_reference/apireferencepage/492/";
 
     private final Map<String, Map> fileConfig;
 
     private final Map<String, Object> config;
 
-    public ErrorsPageMigrator() throws ParsingFileException {
+    public PagesMigrator() throws ParsingFileException {
         System.setProperty("webdriver.firefox.profile", "default");
         driver = new FirefoxDriver();
         fileConfig = Utils.loadStatusData(LOGFILE_PATH);
         config = fileConfig.getOrDefault("progress", new HashMap<>());
     }
 
-    public List<ErrorModel> readErrorFiles() {
+    public List<ErrorModel> readMdFiles() {
         String ERROR_FILES_PATH = Utils.getenv("ERROR_FILES_PATH").orElse("/home/ehernandez/twilio/markdown/docs/api/errors");
         if (ERROR_FILES_PATH == null) {
             System.err.println("There's no variable ERROR_FILES_PATH in the system");
@@ -61,7 +66,7 @@ public class ErrorsPageMigrator implements Runnable {
     @Override
     public void run() {
         driver.manage().timeouts().implicitlyWait(15, SECONDS); //Configuring Explicit wait
-        readErrorFiles().forEach(this::createErrorPage);
+        readMdFiles().forEach(this::createErrorPage);
         saveConfig();
         driver.quit();
     }
@@ -72,7 +77,7 @@ public class ErrorsPageMigrator implements Runnable {
                 System.err.println(String.format("The page %s was already processed", errModel));
                 return;
             }
-            driver.navigate().to(DEBUGGING_ADD_NEW_ERROR);
+            driver.navigate().to(ADD_NEW_PAGE);
             WebElement titleCtrl = driver.findElement(By.id("id_title"));
             if (titleCtrl == null) {
                 System.err.println("[CREATION ERROR] Didn't found the form for creating the error page");

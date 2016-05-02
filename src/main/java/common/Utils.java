@@ -1,7 +1,7 @@
 package common;
 
 import com.google.gson.Gson;
-import errorpages.ParsingErrFileException;
+import pages.ParsingFileException;
 import javafx.util.Pair;
 
 import java.io.*;
@@ -51,26 +51,26 @@ public class Utils {
         return key.replace("#","").trim();
     }
 
-    public static void saveStatusData(Map<String, Map> data, File jsonFile) throws ParsingErrFileException {
+    public static void saveStatusData(Map<String, Map> data, File jsonFile) throws ParsingFileException {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(jsonFile))) {
             bw.write((new Gson()).toJson(data));
             bw.close();
         }catch (FileNotFoundException ex) {
-            throw new ParsingErrFileException(String.format("%s was not found for logging the scanning: %s", jsonFile.getAbsoluteFile(), ex.getMessage()));
+            throw new ParsingFileException(String.format("%s was not found for logging the scanning: %s", jsonFile.getAbsoluteFile(), ex.getMessage()));
         }catch(IOException ex)
         {
-            throw new ParsingErrFileException(String.format("Error while reading file %s: %s", jsonFile.getAbsoluteFile(), ex.getMessage()));
+            throw new ParsingFileException(String.format("Error while reading file %s: %s", jsonFile.getAbsoluteFile(), ex.getMessage()));
         }
     }
 
-    public static Map<String, Map> loadStatusData(String jsonFilePath) throws ParsingErrFileException
+    public static Map<String, Map> loadStatusData(String jsonFilePath) throws ParsingFileException
     {
         HashMap<String, String> result = new HashMap<>();
         String jsonDataStr = null;
         try {
             jsonDataStr = readFile(jsonFilePath, StandardCharsets.UTF_8);
-        } catch (IOException ex) {throw new ParsingErrFileException(String.format("Error while loading json file %s for configuration: %s", jsonFilePath, ex.getMessage()));
+        } catch (IOException ex) {throw new ParsingFileException(String.format("Error while loading json file %s for configuration: %s", jsonFilePath, ex.getMessage()));
         }
         return (new Gson()).fromJson(jsonDataStr, Map.class);
     }
