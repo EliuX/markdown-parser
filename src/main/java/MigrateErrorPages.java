@@ -1,9 +1,13 @@
 public class MigrateErrorPages {
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         System.out.println("Importing Errors");
-        ErrorsPageMigrator migrator = new ErrorsPageMigrator();
-        migrator.run();
+        ErrorsPageMigrator migrator = null;
+        try {
+            migrator = new ErrorsPageMigrator();
+            migrator.run();
+        } catch (ParsingErrFileException ex) {
+            System.err.println(ex.getMessage());
+        }
     }
 }

@@ -1,4 +1,5 @@
-/home/ehernandez/automation/twilio-snippets/src/main/java/ErrorsPageMigrator.java
-/home/ehernandez/automation/twilio-snippets/src/main/java/ParsingErrFileException.java
-/home/ehernandez/automation/twilio-snippets/src/main/java/MigrateErrorPages.java
-/home/ehernandez/automation/twilio-snippets/src/main/java/ErrorModel.java
+/home/ehernandez/automation/twilio/markdown-parser/src/main/java/ParsingErrFileException.java
+/home/ehernandez/automation/twilio/markdown-parser/src/main/java/MigrateErrorPages.java
+/home/ehernandez/automation/twilio/markdown-parser/src/main/java/Utils.java
+/home/ehernandez/automation/twilio/markdown-parser/src/main/java/ErrorsPageMigrator.java
+/home/ehernandez/automation/twilio/markdown-parser/src/main/java/ErrorModel.java

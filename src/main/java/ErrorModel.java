@@ -1,12 +1,8 @@
 
+import javafx.util.Pair;
+
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.InvalidPropertiesFormatException;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,8 +13,6 @@ public class ErrorModel {
 
     private final Integer errorId;
 
-    private final String content;
-
     private final String title;
 
     private final String body;
@@ -27,7 +21,7 @@ public class ErrorModel {
 
     private static final Pattern FILE_PATTERN = Pattern.compile("(.+?)\\.[md]+$");
 
-    private static final Pattern TITLE_PATTERN = Pattern.compile("[\\# \\\\w+ \\- ][0-9]{5}");
+    private static final Pattern TITLE_PATTERN = Pattern.compile("[\\# \\\\w+ \\- ][0-9]{4,6}");
 
     public ErrorModel(File errFile) throws ParsingErrFileException{
         Matcher m = FILE_PATTERN.matcher(errFile.getName());
@@ -40,31 +34,28 @@ public class ErrorModel {
         } else{
             throw new ParsingErrFileException(errFile + " Is not an error file");
         }
+        String content;
         try{
-            content = readFile(errFile.getPath(), StandardCharsets.UTF_8);
+            content = Utils.readFile(errFile.getPath(), StandardCharsets.UTF_8);
         }catch(Exception ex)
         {
             throw new ParsingErrFileException(String.format("Error while reading file '%s': %s", errFile.getName(), ex.getMessage()));
         }
         //Parseando contenido
-        Scanner scanner = new Scanner(content);
-        title = scanner.nextLine();
-        scanner.
-        scanner.close();
-        m = TITLE_PATTERN.matcher(errFile.getName());
+        Pair<String, String> split = Utils.extractFirstLineFromString(content);
+        m = TITLE_PATTERN.matcher(split.getKey());
         Integer errNumberFound = null;
-        if (m.find()) {
-            errNumberFound = Integer.valueOf(m.group(1));
-        }
-        if(errNumberFound!=null)
+        if (m.find())
         {
-            throw new ParsingErrFileException(String.format("Title in file %s is wrong: %s", errFile.getName(), title));
+            errNumberFound = Integer.valueOf(m.group(0).trim());
         }
-    }
-
-
-    public String getContent() {
-        return content;
+        if(!errNumberFound.equals(errorId))
+        {
+            throw new ParsingErrFileException(String.format("https://github.com/twilio/markdown/blob/master/docs/api/errors/%s -- has the content of  --> %s", errFile.getName(), split.getKey()));
+        }
+        title = Utils.removeMarkdown(split.getKey());
+        body = Utils.formatMarkdownContent(split.getValue());
+        urlTag = errorId.toString();
     }
 
     public String getBody() {
@@ -75,7 +66,7 @@ public class ErrorModel {
         return FILE_PATTERN;
     }
 
-    public int getErrorId() {
+    public Integer getErrorId() {
         return errorId;
     }
 
@@ -89,15 +80,8 @@ public class ErrorModel {
         return title;
     }
 
-    private final String readFile(String path, Charset encoding)
-            throws IOException
-    {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, encoding);
-    }
-
     @Override
     public String toString() {
-        return String.format("%s: %s", getTitle(), ge);
+        return getTitle();
     }
 }

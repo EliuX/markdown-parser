@@ -1,4 +1,5 @@
 ErrorsPageMigrator.class
 ParsingErrFileException.class
 MigrateErrorPages.class
+Utils.class
 ErrorModel.class
